@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+:root[data-theme="dark"] {
+  --background: #0b1220;
+  --foreground: #e5e7eb;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+:root[data-theme="dark"] .bg-white {
+  background-color: #111827 !important;
+}
+
+:root[data-theme="dark"] .bg-zinc-50 {
+  background-color: #0f172a !important;
+}
+
+:root[data-theme="dark"] .text-zinc-900 {
+  color: #f3f4f6 !important;
+}
+
+:root[data-theme="dark"] .text-zinc-800,
+:root[data-theme="dark"] .text-zinc-700,
+:root[data-theme="dark"] .text-zinc-600 {
+  color: #d1d5db !important;
+}
+
+:root[data-theme="dark"] .border-zinc-200,
+:root[data-theme="dark"] .border-zinc-300 {
+  border-color: #334155 !important;
+}
+
+/* Unified form controls */
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  color: #111827;
+  padding: 0.62rem 0.8rem;
+  line-height: 1.25rem;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+}
+
+label {
+  color: #374151;
+}
+
+/* Light UI overrides for existing dark utility classes in pages */
+.bg-zinc-950 {
+  background-color: #f8fafc !important;
+}
+
+.bg-zinc-950\/80,
+.bg-zinc-950\/50,
+.bg-zinc-950\/40,
+.bg-zinc-950\/30,
+.bg-zinc-900\/40 {
+  background-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.border-zinc-800 {
+  border-color: #e5e7eb !important;
+}
+
+.border-zinc-700 {
+  border-color: #d1d5db !important;
+}
+
+.text-zinc-100,
+.text-zinc-200,
+.text-zinc-300 {
+  color: #111827 !important;
+}
+
+.text-zinc-400 {
+  color: #4b5563 !important;
+}
+
+.text-zinc-500 {
+  color: #374151 !important;
+}
+
+.text-zinc-600 {
+  color: #1f2937 !important;
+}
+
+/* Keep readable light text inside dark chips/cards. */
+.bg-zinc-800 .text-zinc-300,
+.bg-zinc-900 .text-zinc-300,
+.bg-zinc-950 .text-zinc-300,
+.bg-zinc-800\/80 .text-zinc-300,
+.bg-zinc-900\/80 .text-zinc-300,
+.bg-zinc-950\/80 .text-zinc-300,
+.bg-zinc-950\/60 .text-zinc-300,
+.bg-zinc-950\/50 .text-zinc-300 {
+  color: #e5e7eb !important;
+}
+
+.bg-zinc-800 .text-zinc-100,
+.bg-zinc-900 .text-zinc-100,
+.bg-zinc-950 .text-zinc-100 {
+  color: #f3f4f6 !important;
+}
+
+.bg-zinc-800 .text-zinc-400,
+.bg-zinc-900 .text-zinc-400,
+.bg-zinc-950 .text-zinc-400,
+.bg-zinc-800\/80 .text-zinc-400,
+.bg-zinc-900\/80 .text-zinc-400,
+.bg-zinc-950\/80 .text-zinc-400,
+.bg-zinc-950\/60 .text-zinc-400,
+.bg-zinc-950\/50 .text-zinc-400 {
+  color: #d1d5db !important;
+}
+
+.bg-zinc-800 .text-zinc-500,
+.bg-zinc-900 .text-zinc-500,
+.bg-zinc-950 .text-zinc-500,
+.bg-zinc-800\/80 .text-zinc-500,
+.bg-zinc-900\/80 .text-zinc-500,
+.bg-zinc-950\/80 .text-zinc-500,
+.bg-zinc-950\/60 .text-zinc-500,
+.bg-zinc-950\/50 .text-zinc-500 {
+  color: #94a3b8 !important;
+}
+
+.hover\:bg-zinc-800:hover {
+  background-color: #f3f4f6 !important;
+}
+
+.file\:bg-zinc-800::file-selector-button {
+  background-color: #111827 !important;
+}
+
+.file\:text-zinc-200::file-selector-button {
+  color: #ffffff !important;
+}
+
+button,
+a {
+  transition: all 0.16s ease;
+}
+
+@keyframes qadamFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes qadamFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.qadam-fade-up {
+  animation: qadamFadeUp 0.45s ease-out both;
+}
+
+.qadam-float {
+  animation: qadamFloat 4.2s ease-in-out infinite;
+}
+
+.qadam-soft-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qadam-soft-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(15, 23, 42, 0.1);
+}
+
+/* Reusable accordion collapse animation */
+.qadam-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 240ms ease, opacity 180ms ease;
+}
+
+.qadam-collapse.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.qadam-collapse-inner {
+  overflow: hidden;
+}
+
+/* Reusable popover open/close animation for custom lists */
+.qadam-popover {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top center;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.qadam-popover.is-open {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}

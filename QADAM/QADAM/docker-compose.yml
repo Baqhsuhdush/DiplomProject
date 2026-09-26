@@ -1,0 +1,74 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: qadam
+      POSTGRES_PASSWORD: qadam
+      POSTGRES_DB: qadam
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qadam -d qadam"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://qadam:qadam@db:5432/qadam
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-dev-change-me-use-long-secret}
+      CORS_ORIGINS: http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000,http://127.0.0.1:3001
+      DEBUG: "false"
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_BOT_USERNAME: ${TELEGRAM_BOT_USERNAME:-}
+      TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:-}
+      TELEGRAM_LINK_TTL_SECONDS: ${TELEGRAM_LINK_TTL_SECONDS:-900}
+      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY:-}
+      UPLOAD_DIR: /app/data/uploads
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-10}
+    volumes:
+      - uploads:/app/data/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    entrypoint: ["/docker-worker-entrypoint.sh"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://qadam:qadam@db:5432/qadam
+      REDIS_URL: redis://redis:6379/0
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      REMINDER_INTERVAL_SECONDS: ${REMINDER_INTERVAL_SECONDS:-180}
+      REMINDER_MAX_NUDGES_PER_TASK_PER_DAY: ${REMINDER_MAX_NUDGES_PER_TASK_PER_DAY:-80}
+      WORKER_POLL_SECONDS: ${WORKER_POLL_SECONDS:-60}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-dev-change-me-use-long-secret}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+volumes:
+  pgdata:
+  uploads:
